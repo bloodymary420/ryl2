@@ -1,0 +1,77 @@
+// Define the Backstab damage
+float BackstabDamage = 50.0f;
+
+// Define the Cloak duration
+float CloakDuration = 5.0f;
+
+// Define the Throw Dagger damage
+float DaggerDamage = 25.0f;
+
+// Define the Invisibility Detection duration
+float DetectionDuration = 10.0f;
+
+// Define the Backstab function
+void AAssassin::Backstab()
+{
+    // Check if the player is behind an enemy
+    FVector ForwardVector = GetActorForwardVector();
+    FVector EnemyVector = Enemy->GetActorLocation() - GetActorLocation();
+    float DotProduct = FVector::DotProduct(ForwardVector, EnemyVector);
+
+    if (DotProduct > 0)
+    {
+        // Deal backstab damage to the enemy
+        Enemy->TakeDamage(BackstabDamage, FDamageEvent(), GetController(), this);
+    }
+}
+
+// Define the Cloak function
+void AAssassin::Cloak()
+{
+    // Set the character's visibility to hidden
+    SetActorHiddenInGame(true);
+    SetActorEnableCollision(false);
+
+    // Set the character's visibility to unhidden after a delay
+    GetWorld()->GetTimerManager().SetTimer(CloakTimerHandle, this, &AAssassin::Uncloak, CloakDuration, false);
+}
+
+// Define the Uncloak function
+void AAssassin::Uncloak()
+{
+    // Set the character's visibility to unhidden
+    SetActorHiddenInGame(false);
+    SetActorEnableCollision(true);
+}
+
+// Define the Throw Dagger function
+void AAssassin::ThrowDagger()
+{
+    // Spawn a Dagger Actor at the character's location and rotation
+    FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 50.0f;
+    FRotator SpawnRotation = GetActorRotation();
+    ADagger* Dagger = GetWorld()->SpawnActor<ADagger>(DaggerClass, SpawnLocation, SpawnRotation);
+
+    // Set the dagger's damage and velocity
+    Dagger->SetDamage(DaggerDamage);
+    Dagger->SetVelocity(GetActorForwardVector() * 1000.0f);
+}
+
+// Define the Invisibility Detection function
+void AAssassin::DetectInvisibility()
+{
+    // Check for nearby invisible enemies
+    TArray<AActor*> OverlappingActors;
+    DetectionCollision->GetOverlappingActors(OverlappingActors, AEnemyInvisibility::StaticClass());
+
+    for (AActor* Actor : OverlappingActors)
+    {
+        AEnemyInvisibility* InvisibleEnemy = Cast<AEnemyInvisibility>(Actor);
+
+        if (InvisibleEnemy != nullptr)
+        {
+            // Reveal the invisible enemy
+            InvisibleEnemy->Reveal();
+        }
+    }
+}

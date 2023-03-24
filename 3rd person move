@@ -1,0 +1,57 @@
+// Define the movement speed
+float MoveSpeed = 500.0f;
+
+// Define the turn speed
+float TurnSpeed = 50.0f;
+
+// Define the camera boom length
+float CameraBoomLength = 300.0f;
+
+// Define the camera boom offset
+FVector CameraBoomOffset = FVector(0.0f, 0.0f, 50.0f);
+
+// Define the camera rotation
+FRotator CameraRotation = FRotator(-30.0f, 0.0f, 0.0f);
+
+// Define the camera boom
+USpringArmComponent* CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+CameraBoom->SetupAttachment(RootComponent);
+CameraBoom->TargetArmLength = CameraBoomLength;
+CameraBoom->SetRelativeRotation(CameraRotation);
+CameraBoom->SetRelativeLocation(CameraBoomOffset);
+
+// Define the camera
+UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+Camera->SetupAttachment(CameraBoom);
+
+// Define the movement input
+void AMyCharacter::MoveForward(float Value)
+{
+    if (Controller != NULL && Value != 0.0f)
+    {
+        const FVector Direction = GetActorForwardVector();
+        AddMovementInput(Direction, Value * MoveSpeed);
+    }
+}
+
+// Define the strafe input
+void AMyCharacter::MoveRight(float Value)
+{
+    if (Controller != NULL && Value != 0.0f)
+    {
+        const FVector Direction = GetActorRightVector();
+        AddMovementInput(Direction, Value * MoveSpeed);
+    }
+}
+
+// Define the turn input
+void AMyCharacter::Turn(float Value)
+{
+    AddControllerYawInput(Value * TurnSpeed * GetWorld()->GetDeltaSeconds());
+}
+
+// Define the look up input
+void AMyCharacter::LookUp(float Value)
+{
+    AddControllerPitchInput(Value * TurnSpeed * GetWorld()->GetDeltaSeconds());
+}

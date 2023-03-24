@@ -2,57 +2,165 @@
 #include <string>
 using namespace std;
 
-class Character {
-private:
-    string name;
-    string gender;
-    string appearance;
-    string charClass;
+public class Warrior : MonoBehaviour {
 
-public:
-    // Constructor
-    Character(string n, string g, string a, string c) {
-        name = n;
-        gender = g;
-        appearance = a;
-        charClass = c;
+    // Stats
+    private int strength = 10;
+    private int accuracy = 8;
+    private int evasion = 8;
+    private int mpMax = 50;
+    private int defense = 1;
+    private int speed = 8;
+    private int magicResistance = 2;
+    private int constitution = 4;
+    private int hpMax = 80;
+    private int hpRecovery = 5;
+
+    // Dual Wield Mastery
+    private bool hasDualWieldMastery = true;
+
+    // Buckler defense
+    private bool canUseBuckler = true;
+
+    // Private variables
+    private int currentHp;
+    private int currentMp;
+
+    void Start () {
+        currentHp = hpMax;
+        currentMp = mpMax;
     }
 
-    // Getters
-    string getName() { return name; }
-    string getGender() { return gender; }
-    string getAppearance() { return appearance; }
-    string getClass() { return charClass; }
+    void Update () {
+        // Update character here
+    }
 
-    // Setters
-    void setName(string n) { name = n; }
-    void setGender(string g) { gender = g; }
-    void setAppearance(string a) { appearance = a; }
-    void setClass(string c) { charClass = c; }
-};
+    public int GetStrength() {
+        return strength;
+    }
 
-int main() {
-    // Create a new character
-    Character player("John", "Male", "Tall and muscular", "Warrior");
+    public int GetAccuracy() {
+        return accuracy;
+    }
 
-    // Print the character's attributes
-    cout << "Name: " << player.getName() << endl;
-    cout << "Gender: " << player.getGender() << endl;
-    cout << "Appearance: " << player.getAppearance() << endl;
-    cout << "Class: " << player.getClass() << endl;
+    public int GetEvasion() {
+        return evasion;
+    }
 
-    // Change the character's attributes
-    player.setName("Jane");
-    player.setGender("Female");
-    player.setAppearance("Short and petite");
-    player.setClass("Mage");
+    public int GetMpMax() {
+        return mpMax;
+    }
 
-    // Print the updated attributes
-    cout << "\nUpdated Attributes:" << endl;
-    cout << "Name: " << player.getName() << endl;
-    cout << "Gender: " << player.getGender() << endl;
-    cout << "Appearance: " << player.getAppearance() << endl;
-    cout << "Class: " << player.getClass() << endl;
+    public int GetDefense() {
+        return defense;
+    }
 
-    return 0;
-}
+    public int GetSpeed() {
+        return speed;
+    }
+
+    public int GetMagicResistance() {
+        return magicResistance;
+    }
+
+    public int GetConstitution() {
+        return constitution;
+    }
+
+    public int GetHpMax() {
+        return hpMax;
+    }
+
+    public int GetHpRecovery() {
+        return hpRecovery;
+    }
+
+    public bool HasDualWieldMastery() {
+        return hasDualWieldMastery;
+    }
+
+    public bool CanUseBuckler() {
+        return canUseBuckler;
+    }
+
+    public int GetCurrentHp() {
+        return currentHp;
+    }
+
+    public int GetCurrentMp() {
+        return currentMp;
+    }
+
+    public void SetCurrentHp(int hp) {
+        currentHp = hp;
+    }
+
+    public void SetCurrentMp(int mp) {
+        currentMp = mp;
+    }
+
+    public void IncreaseStrength(int amount) {
+        strength += amount;
+    }
+
+    public void IncreaseAccuracy(int amount) {
+        accuracy += amount;
+    }
+
+    public void IncreaseEvasion(int amount) {
+        evasion += amount;
+    }
+
+    public void IncreaseMpMax(int amount) {
+        mpMax += amount;
+    }
+
+    public void IncreaseDefense(int amount) {
+        defense += amount;
+    }
+
+    public void IncreaseSpeed(int amount) {
+        speed += amount;
+    }
+
+    public void IncreaseMagicResistance(int amount) {
+        magicResistance += amount;
+    }
+
+    public void IncreaseConstitution(int amount) {
+        constitution += amount;
+    }
+
+    public void IncreaseHpMax(int amount) {
+        hpMax += amount;
+    }
+
+    public void IncreaseHpRecovery(int amount) {
+        hpRecovery += amount;
+    }
+
+    public void SetDualWieldMastery(bool value) {
+        hasDualWieldMastery = value;
+    }
+
+    public void SetCanUseBuckler(bool value) {
+        canUseBuckler = value;
+    }
+
+    public void TakeDamage(int damage) {
+        currentHp -= damage;
+        if (currentHp < 0) {
+            currentHp = 0;
+        }
+    }
+
+    public void Heal(int amount) {
+        currentHp += amount;
+        if (currentHp > hpMax) {
+            currentHp = hpMax;
+        }
+    }
+
+    public void UseMp(int amount) {
+        currentMp -= amount;
+        if (

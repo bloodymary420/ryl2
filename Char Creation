@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Character {
+private:
+    string name;
+    string gender;
+    string appearance;
+    string charClass;
+
+public:
+    // Constructor
+    Character(string n, string g, string a, string c) {
+        name = n;
+        gender = g;
+        appearance = a;
+        charClass = c;
+    }
+
+    // Getters
+    string getName() { return name; }
+    string getGender() { return gender; }
+    string getAppearance() { return appearance; }
+    string getClass() { return charClass; }
+
+    // Setters
+    void setName(string n) { name = n; }
+    void setGender(string g) { gender = g; }
+    void setAppearance(string a) { appearance = a; }
+    void setClass(string c) { charClass = c; }
+};
+
+int main() {
+    // Create a new character
+    Character player("John", "Male", "Tall and muscular", "Warrior");
+
+    // Print the character's attributes
+    cout << "Name: " << player.getName() << endl;
+    cout << "Gender: " << player.getGender() << endl;
+    cout << "Appearance: " << player.getAppearance() << endl;
+    cout << "Class: " << player.getClass() << endl;
+
+    // Change the character's attributes
+    player.setName("Jane");
+    player.setGender("Female");
+    player.setAppearance("Short and petite");
+    player.setClass("Mage");
+
+    // Print the updated attributes
+    cout << "\nUpdated Attributes:" << endl;
+    cout << "Name: " << player.getName() << endl;
+    cout << "Gender: " << player.getGender() << endl;
+    cout << "Appearance: " << player.getAppearance() << endl;
+    cout << "Class: " << player.getClass() << endl;
+
+    return 0;
+}

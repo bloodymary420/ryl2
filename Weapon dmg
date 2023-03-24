@@ -1,0 +1,83 @@
+// Define the weapon swing speed
+float SwingSpeed = 1.0f;
+
+// Define the weapon damage
+float WeaponDamage = 25.0f;
+
+// Define the weapon collision component
+UBoxComponent* WeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponCollision"));
+WeaponCollision->SetupAttachment(RootComponent);
+WeaponCollision->SetRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
+WeaponCollision->SetBoxExtent(FVector(50.0f, 10.0f, 10.0f));
+WeaponCollision->SetCollisionProfileName(TEXT("Weapon"));
+
+// Define the on hit function
+void AMyCharacter::OnWeaponHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+    if (OtherActor != NULL && OtherActor != this && OtherComp != NULL)
+    {
+        // Check if the other actor is an enemy
+        AMyEnemy* Enemy = Cast<AMyEnemy>(OtherActor);
+        if (Enemy != NULL)
+        {
+            // Apply damage to the enemy
+            Enemy->TakeDamage(WeaponDamage, FDamageEvent(), GetController(), this);
+        }
+
+        // Check if the other actor is the player
+        AMyPlayer* Player = Cast<AMyPlayer>(OtherActor);
+        if (Player != NULL)
+        {
+            // Apply damage to the player
+            Player->TakeDamage(WeaponDamage, FDamageEvent(), GetController(), this);
+        }
+    }
+}
+
+// Define the swing weapon function
+void AMyCharacter::SwingWeapon()
+{
+    // Set the weapon collision enabled
+    WeaponCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    WeaponCollision->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel3);
+
+    // Set the weapon collision disabled after a delay
+    GetWorld()->GetTimerManager().SetTimer(WeaponSwingTimerHandle, this, &AMyCharacter::DisableWeaponCollision, 0.5f / SwingSpeed, false);
+}
+
+// Define the disable weapon collision function
+void AMyCharacter::DisableWeaponCollision()
+{
+    // Set the weapon collision disabled
+    WeaponCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+// Define the take damage function for the player
+float AMyPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+    // Reduce the player's health by the damage amount
+    Health -= DamageAmount;
+
+    // Check if the player's health is below 0
+    if (Health <= 0.0f)
+    {
+        // Player is dead, respawn or game over logic
+    }
+
+    return DamageAmount;
+}
+
+// Define the take damage function for the enemy
+float AMyEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+    // Reduce the enemy's health by the damage amount
+    Health -= DamageAmount;
+
+    // Check if the enemy's health is below 0
+    if (Health <= 0.0f)
+    {
+        // Enemy is dead, despawn or respawn logic
+    }
+
+    return DamageAmount;
+}

@@ -1,0 +1,111 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+class Quest {
+private:
+    std::string questName;
+    std::string questObjective;
+    std::string rewardType;
+    int rewardAmount;
+    bool completed;
+
+public:
+    Quest(std::string name, std::string objective, std::string type, int amount) {
+        questName = name;
+        questObjective = objective;
+        rewardType = type;
+        rewardAmount = amount;
+        completed = false;
+    }
+
+    std::string getQuestName() const {
+        return questName;
+    }
+
+    std::string getQuestObjective() const {
+        return questObjective;
+    }
+
+    std::string getRewardType() const {
+        return rewardType;
+    }
+
+    int getRewardAmount() const {
+        return rewardAmount;
+    }
+
+    bool isCompleted() const {
+        return completed;
+    }
+
+    void complete() {
+        completed = true;
+    }
+};
+
+class NPC {
+private:
+    std::string name;
+    std::vector<Quest> quests;
+
+public:
+    NPC(std::string npcName) {
+        name = npcName;
+    }
+
+    std::string getName() const {
+        return name;
+    }
+
+    void addQuest(Quest quest) {
+        quests.push_back(quest);
+    }
+
+    std::vector<Quest> getQuests() const {
+        return quests;
+    }
+};
+
+class QuestManager {
+private:
+    std::vector<NPC> npcs;
+
+public:
+    void addNPC(NPC npc) {
+        npcs.push_back(npc);
+    }
+
+    std::vector<NPC> getNPCs() const {
+        return npcs;
+    }
+};
+
+int main() {
+    QuestManager questManager;
+
+    // Create an NPC with quests
+    NPC npc("Quest Giver");
+    Quest quest1("Kill the Goblin", "Defeat the Goblin King in his lair", "Experience Points", 100);
+    npc.addQuest(quest1);
+    Quest quest2("Retrieve the Artifact", "Find the ancient artifact in the ruins", "Gold", 50);
+    npc.addQuest(quest2);
+
+    // Add the NPC to the quest manager
+    questManager.addNPC(npc);
+
+    // Display quests for each NPC
+    std::vector<NPC> npcs = questManager.getNPCs();
+    for (NPC npc : npcs) {
+        std::cout << "NPC " << npc.getName() << " has the following quests:\n";
+        std::vector<Quest> quests = npc.getQuests();
+        for (Quest quest : quests) {
+            std::cout << "Quest: " << quest.getQuestName() << "\n";
+            std::cout << "Objective: " << quest.getQuestObjective() << "\n";
+            std::cout << "Reward: " << quest.getRewardAmount() << " " << quest.getRewardType() << "\n";
+        }
+        std::cout << "\n";
+    }
+
+    return 0;
+}

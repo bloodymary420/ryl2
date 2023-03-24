@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+
+class CharacterClass {
+protected:
+    std::string className;
+    int baseDamage;
+    int baseDefense;
+    int baseSpeed;
+    int baseMagic;
+
+public:
+    CharacterClass(std::string name, int dmg, int def, int spd, int mag) {
+        className = name;
+        baseDamage = dmg;
+        baseDefense = def;
+        baseSpeed = spd;
+        baseMagic = mag;
+    }
+
+    virtual void useSkill() {
+        std::cout << "No skill defined for this class!" << std::endl;
+    }
+
+    // getters
+    std::string getClassName() {
+        return className;
+    }
+
+    int getBaseDamage() {
+        return baseDamage;
+    }
+
+    int getBaseDefense() {
+        return baseDefense;
+    }
+
+    int getBaseSpeed() {
+        return baseSpeed;
+    }
+
+    int getBaseMagic() {
+        return baseMagic;
+    }
+};
+
+class Fighter : public CharacterClass {
+public:
+    Fighter() : CharacterClass("Fighter", 10, 5, 7, 2) {}
+
+    void useSkill() {
+        std::cout << "Fighter uses Double Strike!" << std::endl;
+    }
+};
+
+class Rogue : public CharacterClass {
+public:
+    Rogue() : CharacterClass("Rogue", 8, 3, 10, 1) {}
+
+    void useSkill() {
+        std::cout << "Rogue uses Backstab!" << std::endl;
+    }
+};
+
+class Mage : public CharacterClass {
+public:
+    Mage() : CharacterClass("Mage", 6, 2, 5, 10) {}
+
+    void useSkill() {
+        std::cout << "Mage uses Fireball!" << std::endl;
+    }
+};
+
+class Acolyte : public CharacterClass {
+public:
+    Acolyte() : CharacterClass("Acolyte", 4, 6, 4, 8) {}
+
+    void useSkill() {
+        std::cout << "Acolyte uses Heal!" << std::endl;
+    }
+};
+
+class Warrior : public CharacterClass {
+public:
+    Warrior() : CharacterClass("Warrior", 12, 2, 10, 1) {}
+
+    void useSkill() {
+        std::cout << "Warrior uses Charge!" << std::endl;
+    }
+};
